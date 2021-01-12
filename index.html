@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hotmath</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="crossorigin="anonymous"></script>
+</head>
+<body>
+<script type="text/jsx">
+class Hotmath extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            course: '',
+            page: '',
+            chapter: '',
+            section: '',
+            problem: '',
+            url: '',
+        };
+    
+        this.handle_change = this.handle_change.bind(this);
+        this.handle_submit = this.handle_submit.bind(this);
+        this.generate_url = this.generate_url.bind(this);
+        this.available = false;
+    }
+    
+    generate_url() {
+        /* TODO more courses
+        if(this.state.course != 'Algebra 2') {
+            alert('Unfortunately Virginia Algebra 2 is the only textbook available at this time');
+            return '';
+        }*/
+
+        var url = 'https://www.varsitytutors.com/hotmath/help/solutions/hollidayva212/' + this.state.chapter.toString() + '/' + this.state.section.toString() + '/Exercises/hollidayva212_' + this.state.chapter.toString() + '_' + this.state.section.toString() + '_Exercises_' + this.state.problem.toString() + '_' + this.state.page.toString() + '/index.html'; 
+        return url;
+    }
+
+    handle_change(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        if([name] == 'problem' || [name] == 'page' || [name] == 'chapter' || [name] == 'section') {
+            for(var i=0; i<value.length; i++) {
+                if(value.substring(i, i+1) < '0' || value.substring(i, i+1) > '9') {
+                    return '';
+                }
+            }
+        }
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handle_submit(event) {
+        event.preventDefault();
+        if(url != '') {
+            var url = this.generate_url();
+            console.log(url);
+//            window.location.href = url;
+            var win = window.open(url, '_blank');
+            win.focus();
+
+            this.setState({url: url});
+            this.available = true;
+        }
+    } 
+
+    render() {
+        return (
+            <div class='center'>
+            <form onSubmit={this.handle_submit}>
+                <label for='course'>Course</label>
+                <select name='course' value={this.state.course} onChange={this.handle_change}>
+                    <option>Algebra 2</option>
+                </select>
+                <label for='chapter'>Chapter</label>
+                <input type='text' name='chapter' value={this.state.chapter} onChange={this.handle_change}/>
+                <label for='section'>Section</label>
+                <input type='text' name='section' value={this.state.section} onChange={this.handle_change}/>
+                <label for='page'>Page</label>
+                <input type='text' name='page' value={this.state.page} onChange={this.handle_change}/>
+                <label for='problem'>Problem</label>
+                <input type='text' name='problem' value={this.state.problem} onChange={this.handle_change}/>
+                <input type="submit" value="Get Solution"/>
+            </form>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<Hotmath />, document.getElementById('content'));
+</script>
+<div id='content'>
+</div>
+</body>
+</html>
