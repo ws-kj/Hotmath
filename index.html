@@ -75,8 +75,9 @@ class Hotmath extends React.Component {
 
     render() {
         return (
-            <div class='center'>
+            <div>
             <form onSubmit={this.handle_submit}>
+                <h2>Hotmath Solution Finder</h2>
                 <label for='course'>Course</label>
                 <select name='course' value={this.state.course} onChange={this.handle_change}>
                     <option>Algebra 2</option>
@@ -91,6 +92,7 @@ class Hotmath extends React.Component {
                 <input type='text' name='problem' value={this.state.problem} onChange={this.handle_change}/>
                 <input type="submit" value="Get Solution"/>
             </form>
+            <p>Will Savage - 2021 - MIT License</p>
             </div>
         );
     }
