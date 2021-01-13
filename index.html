@@ -22,14 +22,22 @@ class Hotmath extends React.Component {
             section: '',
             problem: '',
             url: '',
+            help: false
         };
     
         this.handle_change = this.handle_change.bind(this);
         this.handle_submit = this.handle_submit.bind(this);
         this.generate_url = this.generate_url.bind(this);
+        this.toggle_help = this.toggle_help.bind(this);
         this.available = false;
     }
     
+    toggle_help() {
+        this.setState({
+            help: !this.state.help
+        });
+    }
+
     generate_url() {
         /* TODO more courses
         if(this.state.course != 'Algebra 2') {
@@ -77,7 +85,17 @@ class Hotmath extends React.Component {
         return (
             <div>
             <form onSubmit={this.handle_submit}>
-                <h2>Hotmath Solution Finder</h2>
+                <h2 id='title'>Hotmath Solution Finder</h2>
+                <button
+                    id='help-button' disabled
+                    onMouseEnter={() => this.toggle_help()}
+                    onMouseLeave={() => this.toggle_help()}>
+                    Help
+                </button>
+                {this.state.help && (
+                    <p id='help'>Select your textbook, then fill out the required information for your problem. The page and section can be found in the bottom left corner of your textbook page.</p>
+                )}
+                <br />
                 <label for='course'>Course</label>
                 <select name='course' value={this.state.course} onChange={this.handle_change}>
                     <option>Algebra 2</option>
